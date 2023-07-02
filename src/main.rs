@@ -1,6 +1,10 @@
+// Test용 Code structure, Warning 제거
 #![allow(non_snake_case)]
+#![allow(dead_code)]
+#![allow(unused_assignments)]
+#![allow(unused_variables)]
 
-use std::fmt::format;
+// use std::fmt::format;
 
 fn main() {
     // test1();
@@ -9,7 +13,8 @@ fn main() {
     // test4();
     // test5();
     // test6();
-    test7();
+    // test7();
+    test8();
 }
 
 fn test1() {
@@ -117,17 +122,17 @@ fn test6() {
 }
 
 fn test7() {
-    // #### Num type test 1 ####
+    // #### BasicTypes-Numbers-Integer-2 ####
     // u8 Type의 38이라는 숫자를 u16 타입의 v에 할당하기 위해서는 "as u16" 으로 Type 변환을 수행
     let _v: u16 = 38_u8 as u16;
 
-    // #### Num type test 2 ####
+    // #### BasicTypes-Numbers-Integer-3 ####
     let x: u32 = 5;
     // Function "type_of()" calls
     assert_eq!("u32".to_string(), type_of(&x));
     println!("{}", type_of(&x));
 
-    // #### Num type test 3 ####
+    // #### NBasicTypes-Numbers-Integer-5 ####
     // v1의 type을 지정하지 않으면, type을 유추하여 변수 type 지정
     // 251과 8의 type이 u8이기때문에 v1의 type은 u8
     // u8의 MAX value는 255 이기때문에 259를 담을 수 없음, u16, i16으로 type 변경
@@ -135,15 +140,53 @@ fn test7() {
     let v2 = i16::checked_add(251, 8).unwrap();
     println!("{},{}", v1, v2);
 
-    // #### Num type test 4 ####
-    // 다양한 숫자 byte type에 대한 계산 가능
+    // #### BasicTypes-Numbers-Integer-6 ####
+    // 다양한 숫자 형태간 계산 가능
     let g = 1_024 + 0xff + 0o77 + 0b1111_1111;
     assert!(g == 1597)
 }
 
+fn test8() {
+    // #### BasicTypes-Numbers-Integer-7 ####
+    let x = 1_000.000_1;
+    let y: f32 = 0.12;
+    let z = 0.01_f64;
+
+    // type_name을 문자열(String)으로 반환하는 type_of_sec 함수 적용
+    // x 변수의 Type을 비교해서 True이면 컴파일 정상 실행
+    // x의 type은 상단에 유추된대로 f64
+    assert_eq!(type_of_sec(&x), "f64".to_string());
+    println!("Success!");
+
+    // #### BasicTypes-Numbers-Integer-8 ####
+    // f64 를 f32 길이로 변경
+    assert!(0.1_f32+0.2 as f32==0.3);
+    println!("Success!");
+
+    // #### BasicTypes-Numbers-Integer-9 ####
+    // println에서 97~112 가 출력되도록 수정
+    let mut sum = 0;
+    // -3 ~ 1 까지 실행되고 2 일때 중지.
+    for i in -3..2 {
+        sum += i
+    }
+    // for loop 값
+    assert!(sum == -5);
+    // a ~ z 까지 실행, =z 가 range에 표현되었기 때문
+    // https://www.asciitable.com 참고, 알파벳을 Decimal 숫자로 변경
+    for c in 'a'..='z' {
+        println!("{}",c as u8);
+    }
+}
+
 // Placeholder <T> 사용
-// #### Num type test 2 ####
+// #### BasicTypes-Numbers-Integer-3 ####
 fn type_of<T>(_: &T) -> String {
     // test7() 에서 type_of(x), x를 argument로 지정했으므로 u32 예상
+    format!("{}", std::any::type_name::<T>())
+}
+
+// #### BasicTypes-Numbers-Integer-7 ####
+fn type_of_sec<T>(_: &T) -> String {
     format!("{}", std::any::type_name::<T>())
 }
